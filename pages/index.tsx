@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Header from "@/components/Header";
 import Head from "next/head";
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { async } from '@firebase/util';
 import Link from 'next/link';
 
