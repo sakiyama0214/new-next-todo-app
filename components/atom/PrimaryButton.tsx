@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 type Props = {
     children: ReactNode;
-    onClick?: () => void;
+    onClick?: any;
 }
 
 const PrimaryButton: React.FC<Props> = (props) => {
