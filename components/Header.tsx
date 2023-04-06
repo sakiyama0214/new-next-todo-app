@@ -33,13 +33,13 @@ const Header = () => {
           <h2 className='text-white text-3xl font-bold p-3 basis-3/4'>TODO LIST</h2>
           <div className='basis-1/4'>
               <span className='mr-4'>
-                <PrimaryButton >
+                {/* <PrimaryButton> */}
                   <Link href='/'>Home</Link>
-                </PrimaryButton>
+                {/* </PrimaryButton> */}
               </span>
-              <PrimaryButton>
+              {/* <PrimaryButton> */}
                 <Link href='/todos/create'>TODO作成</Link>
-              </PrimaryButton>
+              {/* </PrimaryButton> */}
               <PrimaryButton
               onClick={handleLogout}
               >

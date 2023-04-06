@@ -5,7 +5,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import React, {useState} from 'react'
 
-const create = () => {
+const Create = () => {
     const [todoTitle, setTodoTitle] = useState('');
     const [todoBody, setTodoBody] = useState('');
     const [todoStatus, setTodoStatus] = useState('notStarted');
@@ -67,4 +67,4 @@ const create = () => {
   )
 }
 
-export default create
+export default Create

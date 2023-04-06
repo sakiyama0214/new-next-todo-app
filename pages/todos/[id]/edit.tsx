@@ -5,7 +5,7 @@ import { collection, doc, updateDoc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import React, {useState} from 'react'
 
-const edit = () => {
+const Edit = () => {
     const router = useRouter();
 
     const [editTodoTitle, setEditTodoTitle] = useState(router.query.title);
@@ -61,4 +61,4 @@ const edit = () => {
   )
 }
 
-export default edit
+export default Edit
