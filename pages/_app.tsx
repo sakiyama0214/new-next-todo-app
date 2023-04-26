@@ -5,7 +5,6 @@ import { auth } from '@/lib/firebase'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { RecoilRoot } from 'recoil'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -17,11 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
     })
   }, [])
   return (
-    <RecoilRoot>
-      <AuthProvider>
-        <Header />
-        <Component {...pageProps} />
-      </AuthProvider>
-    </RecoilRoot>
+    <AuthProvider>
+      <Header />
+      <Component {...pageProps} />
+    </AuthProvider>
   )
 }
