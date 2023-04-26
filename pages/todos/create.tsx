@@ -1,6 +1,6 @@
 import PrimaryButton from '@/components/atom/PrimaryButton'
 import Header from '@/components/Header';
-import { db } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { addDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import React, {useState} from 'react'
@@ -17,6 +17,7 @@ const Create = () => {
         if (todoTitle !== '') {
             if (todoBody !== '') {
                 await addDoc(collection(db, 'todos'), {
+                    userId: auth.currentUser?.uid,
                     title: todoTitle,
                     body: todoBody,
                     status: todoStatus,
@@ -34,7 +35,6 @@ const Create = () => {
     }
   return (
     <>
-        <Header />
         <div className='container mx-auto mt-10'>
             <h2 className='text-3xl font-bold'>TODO 作成</h2>
             <input

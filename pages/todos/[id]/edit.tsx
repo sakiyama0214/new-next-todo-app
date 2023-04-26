@@ -1,7 +1,7 @@
 import PrimaryButton from '@/components/atom/PrimaryButton'
 import Header from '@/components/Header'
 import { db } from '@/lib/firebase'
-import { collection, doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import React, {useState} from 'react'
 
@@ -28,7 +28,6 @@ const Edit = () => {
     }
   return (
     <>
-        <Header />
         <div className='container mx-auto mt-10'>
             <h2 className='text-3xl font-bold'>TODO 編集</h2>
             <input

@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import Header from "@/components/Header";
 import Head from "next/head";
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import { async } from '@firebase/util';
 import Link from 'next/link';
 
 export type Todo = {
+  userId: string;
   title: string;
   body: string;
   status: string;
@@ -17,6 +16,7 @@ export const status = (status: string) => {
   return (status == 'notStarted' ? '未着手' : status == 'inProgress' ? '作業中' : '完了')
 }
 
+
 const Home: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState('');
@@ -25,10 +25,11 @@ const Home: React.FC = () => {
   // setTodosにデータを追加
   useEffect(() => {
     const q = query(collection(db, 'todos'));
-    onSnapshot(q, async (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       setTodos(
         snapshot.docs.map((doc) => {
           return {
+            userId: doc.data().userId as string,
             title: doc.data().title as string,
             body: doc.data().body as string,
             status: doc.data().status as string,
@@ -36,20 +37,28 @@ const Home: React.FC = () => {
           }
         })
       )
-    })
+    });
+    const result = todos.filter((todo) => todo.userId === auth.currentUser?.uid);
+    setTodos(result);
+  },[])
+
+  useEffect(() => {
     const filteringTodos = () => {
       switch (filter) {
         case 'notStarted':
-          setFilteredTodos(todos.filter((todo) => todo.status === 'notStarted'));
+          setFilteredTodos(todos.filter((todo) => todo.status === 'notStarted')
+          .filter((todo) => todo.userId === auth.currentUser?.uid));
           break;
         case 'inProgress':
-          setFilteredTodos(todos.filter((todo) => todo.status === 'inProgress'));
+          setFilteredTodos(todos.filter((todo) => todo.status === 'inProgress')
+          .filter((todo) => todo.userId === auth.currentUser?.uid));
           break;
         case 'done':
-          setFilteredTodos(todos.filter((todo) => todo.status === 'done'));
+          setFilteredTodos(todos.filter((todo) => todo.status === 'done')
+          .filter((todo) => todo.userId === auth.currentUser?.uid));
           break;
         default:
-          setFilteredTodos(todos);
+          setFilteredTodos(todos.filter((todo) => todo.userId === auth.currentUser?.uid));
       }
     };
     filteringTodos();
@@ -60,7 +69,6 @@ const Home: React.FC = () => {
       <Head>
         <title>TODO LIST</title>
       </Head>
-      <Header />
       <div className="text-center">
         <h2 className="text-3xl font-bold mt-10">TODOリスト</h2>
         <div className='flex justify-center my-6'>

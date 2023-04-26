@@ -25,7 +25,6 @@ export default function TodoDetail() {
 
     return (
         <>
-            <Header />
             <div className='w-1/2 mx-auto'>
                 <p className='text-2xl mt-10'>
                     <label className='mr-10'>タイトル :</label>

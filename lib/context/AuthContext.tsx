@@ -1,8 +1,9 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useRouter } from 'next/router';
-import { async } from '@firebase/util';
 import { auth } from '../firebase';
+import { useRecoilState } from 'recoil';
+import { userState } from '../atoms';
 
 export type UserType = User | null;
 

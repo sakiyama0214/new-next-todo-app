@@ -1,7 +1,7 @@
 import PrimaryButton from '@/components/atom/PrimaryButton';
 import { useAuthContext } from '@/lib/context/AuthContext';
 import { auth } from '@/lib/firebase';
-import { Snackbar } from '@mui/material';
+import { Container, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
@@ -21,9 +21,13 @@ const SignUp = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await createUserWithEmailAndPassword(auth, email, password);
-    router.push('/');
+    try {
+      e.preventDefault();
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push('/');
+    } catch(err) {
+      alert('メールアドレスまたはパスワードを適切に入力してください')
+    }
   }
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,37 +44,38 @@ const SignUp = () => {
         open={isLoggedIn}
         anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
         autoHideDuration={3000}
-        key={'top' + 'center'}
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity='warning'>すでにログインしています</Alert>
       </Snackbar>
-      <h2>ユーザー登録</h2>
-      <form>
-        <div>
-          <InputLabel>メールアドレス</InputLabel>
-          <TextField 
-            name='email'
-            type='email'
-            size='small'
-            onChange={handleChangeEmail}
-          />
-        </div>
-        <div>
-          <InputLabel>パスワード</InputLabel>
-          <TextField 
-            name='password'
-            type='password'
-            size='small'
-            onChange={handleChangePassword}
-          />
-        </div>
-        <div>
-          <PrimaryButton onClick={handleSubmit}>
-            登録
-          </PrimaryButton>
-        </div>
-      </form>
+      <Container>
+        <h2 className='my-3'>ユーザー登録</h2>
+        <form>
+          <div>
+            <InputLabel>メールアドレス</InputLabel>
+            <TextField 
+              name='email'
+              type='email'
+              size='small'
+              onChange={handleChangeEmail}
+            />
+          </div>
+          <div>
+            <InputLabel>パスワード</InputLabel>
+            <TextField 
+              name='password'
+              type='password'
+              size='small'
+              onChange={handleChangePassword}
+            />
+          </div>
+          <div>
+            <PrimaryButton onClick={handleSubmit}>
+              登録
+            </PrimaryButton>
+          </div>
+        </form>
+      </Container>
     </div>
   )
 }

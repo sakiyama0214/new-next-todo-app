@@ -1,6 +1,6 @@
 import { useAuthContext } from '@/lib/context/AuthContext'
 import { useRouter } from 'next/router';
-import { Alert, InputLabel, Snackbar, TextField } from '@mui/material';
+import { Alert, Container, InputLabel, Snackbar, TextField } from '@mui/material';
 
 import React, { useState } from 'react'
 import PrimaryButton from '@/components/atom/PrimaryButton';
@@ -8,6 +8,7 @@ import { async } from '@firebase/util';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import Link from 'next/link';
+import Header from '@/components/Header';
 
 const Login = () => {
     const { user } = useAuthContext();
@@ -29,8 +30,12 @@ const Login = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push('/')
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        router.push('/')
+      } catch(err) {
+        alert('メールアドレスまたはパスワードが間違っています');
+      }
     }
 
   return (
@@ -39,7 +44,6 @@ const Login = () => {
           open={isLoggedIn}
           anchorOrigin={{vertical: 'top', horizontal: 'center'}}
           autoHideDuration={3000}
-          key={'top' + 'center'}
           onClose={handleClose}
         >
             <Alert onClose={handleClose} severity='warning'>すでにログインしています</Alert>
@@ -52,35 +56,37 @@ const Login = () => {
       >
         <Alert severity="warning">ログインしてください</Alert>
       </Snackbar>
-      <h2>ログイン</h2>
-      <form>
-        <div>
-          <InputLabel>メールアドレス</InputLabel>
-          <TextField
-            name='email'
-            type='email'
-            size='small'
-            onChange={handleChangeEmail}
-          />
-        </div>
-        <div>
-          <InputLabel>パスワード</InputLabel>
-          <TextField
-            name='password'
-            type='password'
-            size='small'
-            onChange={handleChangePassword}
-          />
-        </div>
-        <div>
-          <PrimaryButton onClick={handleSubmit}>ログイン</PrimaryButton>
-        </div>
-        <div>
-          ユーザー登録は
-          <Link href={'/SignUp'}>こちら</Link>
-          から
-        </div>
-      </form>
+      <Container>
+        <h2 className='my-3'>ログイン</h2>
+        <form>
+          <div>
+            <InputLabel>メールアドレス</InputLabel>
+            <TextField
+              name='email'
+              type='email'
+              size='small'
+              onChange={handleChangeEmail}
+            />
+          </div>
+          <div>
+            <InputLabel>パスワード</InputLabel>
+            <TextField
+              name='password'
+              type='password'
+              size='small'
+              onChange={handleChangePassword}
+            />
+          </div>
+          <div>
+            <PrimaryButton onClick={handleSubmit}>ログイン</PrimaryButton>
+          </div>
+          <div>
+            ユーザー登録は
+            <Link href={'/SignUp'}>こちら</Link>
+            から
+          </div>
+        </form>
+      </Container>
     </div>
   )
 }
